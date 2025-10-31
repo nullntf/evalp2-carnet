@@ -5,23 +5,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Sistema de Autenticación</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="dashboard-container">
-            <div class="dashboard-header">
-                <h1>Bienvenido al Dashboard</h1>
-                <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+    <div class="dashboard-layout">
+        <!-- Sidebar Menu -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>📊 Dashboard</h2>
+                <div class="user-badge">
+                    <span id="sidebarUsername"></span>
+                </div>
             </div>
-            <div class="user-info">
-                <h2>Información del Usuario</h2>
-                <p><strong>Usuario:</strong> <span id="displayUsername"></span></p>
-                <p><strong>Email:</strong> <span id="displayEmail"></span></p>
-                <p><strong>ID:</strong> <span id="displayId"></span></p>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link active" data-view="home">
+                            <span class="icon">🏠</span>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-view="area-volumen">
+                            <span class="icon">📐</span>
+                            <span>Área y Volumen</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-view="cuadrantes">
+                            <span class="icon">📍</span>
+                            <span>Cuadrantes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn btn-danger btn-block">
+                    <span>🚪</span> Cerrar Sesión
+                </button>
             </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Vista Inicio -->
+            <div id="view-home" class="view active">
+                <div class="content-header">
+                    <h1>Bienvenido al Dashboard</h1>
+                </div>
+                <div class="user-info">
+                    <h2>Información del Usuario</h2>
+                    <p><strong>Usuario:</strong> <span id="displayUsername"></span></p>
+                    <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+                    <p><strong>ID:</strong> <span id="displayId"></span></p>
+                </div>
+            </div>
+            
+            <!-- Vista Área y Volumen -->
+            <div id="view-area-volumen" class="view">
+                <div class="content-header">
+                    <h1>📐 Calculadora de Área y Volumen</h1>
+                    <p class="subtitle">Calcula áreas y volúmenes de figuras geométricas</p>
+                </div>
+                
+                <div class="calculator-grid">
+                    <!-- Calculadora Cilindro -->
+                    <div class="calculator-card">
+                        <div class="card-header">
+                            <h3>🔵 Cilindro</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-cilindro" class="calc-form">
+                                <div class="form-group">
+                                    <label for="cilindro-radio">Radio (r):</label>
+                                    <input type="number" id="cilindro-radio" step="0.01" placeholder="Ingrese el radio">
+                                    <span class="error-message" id="error-cilindro-radio"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cilindro-altura">Altura (h):</label>
+                                    <input type="number" id="cilindro-altura" step="0.01" placeholder="Ingrese la altura">
+                                    <span class="error-message" id="error-cilindro-altura"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Calcular</button>
+                            </form>
+                            
+                            <div id="resultado-cilindro" class="resultado-card hidden">
+                                <h4>Resultados:</h4>
+                                <div class="resultado-item">
+                                    <span class="resultado-label">Área Total:</span>
+                                    <span class="resultado-value" id="cilindro-area"></span>
+                                </div>
+                                <div class="resultado-item">
+                                    <span class="resultado-label">Volumen:</span>
+                                    <span class="resultado-value" id="cilindro-volumen"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calculadora Prisma Rectangular -->
+                    <div class="calculator-card">
+                        <div class="card-header">
+                            <h3>📦 Prisma Rectangular</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="form-prisma" class="calc-form">
+                                <div class="form-group">
+                                    <label for="prisma-largo">Largo (l):</label>
+                                    <input type="number" id="prisma-largo" step="0.01" placeholder="Ingrese el largo">
+                                    <span class="error-message" id="error-prisma-largo"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prisma-ancho">Ancho (w):</label>
+                                    <input type="number" id="prisma-ancho" step="0.01" placeholder="Ingrese el ancho">
+                                    <span class="error-message" id="error-prisma-ancho"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prisma-alto">Alto (h):</label>
+                                    <input type="number" id="prisma-alto" step="0.01" placeholder="Ingrese el alto">
+                                    <span class="error-message" id="error-prisma-alto"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Calcular</button>
+                            </form>
+                            
+                            <div id="resultado-prisma" class="resultado-card hidden">
+                                <h4>Resultados:</h4>
+                                <div class="resultado-item">
+                                    <span class="resultado-label">Área Total:</span>
+                                    <span class="resultado-value" id="prisma-area"></span>
+                                </div>
+                                <div class="resultado-item">
+                                    <span class="resultado-label">Volumen:</span>
+                                    <span class="resultado-value" id="prisma-volumen"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vista Cuadrantes -->
+            <div id="view-cuadrantes" class="view">
+                <div class="content-header">
+                    <h1>📍 Cuadrantes</h1>
+                    <p class="subtitle">Esta sección estará disponible próximamente</p>
+                </div>
+            </div>
+            
             <div id="message" class="message"></div>
-        </div>
+        </main>
     </div>
+    
     <script src="app.js"></script>
+    <script src="calculadora.js"></script>
 </body>
 </html>
