@@ -166,3 +166,192 @@ navLinks.forEach(link => {
         }
     });
 });
+
+// ============================================
+// IDENTIFICADOR DE CUADRANTES
+// ============================================
+
+// Función para validar coordenada (permite negativos)
+function validateCoordinate(value, fieldName, errorElementId) {
+    const errorElement = document.getElementById(errorElementId);
+    const inputElement = document.getElementById(fieldName);
+    
+    // Limpiar error previo
+    errorElement.textContent = '';
+    inputElement.classList.remove('error');
+    
+    // Validar campo vacío
+    if (value === '' || value === null) {
+        errorElement.textContent = 'Este campo es obligatorio';
+        inputElement.classList.add('error');
+        return false;
+    }
+    
+    // Convertir a número
+    const numValue = parseFloat(value);
+    
+    // Validar que sea un número
+    if (isNaN(numValue)) {
+        errorElement.textContent = 'Debe ingresar un número válido';
+        inputElement.classList.add('error');
+        return false;
+    }
+    
+    return true;
+}
+
+// Función para actualizar el punto en el SVG
+function updatePuntoSVG(x, y) {
+    const punto = document.getElementById('punto-dinamico');
+    const coords = document.getElementById('coords-dinamico');
+    
+    if (!punto || !coords) return;
+    
+    // Escalar las coordenadas al SVG (centro en 200, 200)
+    // Máximo rango visible: -5 a 5 en cada eje
+    const scale = 40; // 100 unidades SVG por cada 2.5 unidades del plano
+    const svgX = 200 + (x * scale);
+    const svgY = 200 - (y * scale); // Invertir Y porque SVG tiene Y hacia abajo
+    
+    // Limitar al área visible
+    const limitedX = Math.max(10, Math.min(390, svgX));
+    const limitedY = Math.max(10, Math.min(390, svgY));
+    
+    // Actualizar posición del punto
+    punto.setAttribute('cx', limitedX);
+    punto.setAttribute('cy', limitedY);
+    punto.setAttribute('r', '8');
+    punto.setAttribute('opacity', '1');
+    
+    // Actualizar texto de coordenadas
+    coords.textContent = `(${x}, ${y})`;
+    coords.setAttribute('x', limitedX + 12);
+    coords.setAttribute('y', limitedY - 5);
+    coords.setAttribute('opacity', '1');
+}
+
+// Función para identificar el cuadrante
+function identificarCuadrante(x, y) {
+    // Casos especiales
+    if (x === 0 && y === 0) {
+        return {
+            tipo: 'origen',
+            nombre: 'Origen',
+            descripcion: 'El punto está en el origen (0,0)',
+            clase: 'en-origen',
+            icono: '⊙'
+        };
+    } else if (x === 0 && y !== 0) {
+        return {
+            tipo: 'eje-y',
+            nombre: 'Eje Y',
+            descripcion: 'El punto está sobre el eje Y',
+            clase: 'en-eje-y',
+            icono: '↕'
+        };
+    } else if (x !== 0 && y === 0) {
+        return {
+            tipo: 'eje-x',
+            nombre: 'Eje X',
+            descripcion: 'El punto está sobre el eje X',
+            clase: 'en-eje-x',
+            icono: '↔'
+        };
+    }
+    
+    // Determinar cuadrante
+    if (x > 0 && y > 0) {
+        return {
+            tipo: 'cuadrante',
+            numero: 1,
+            nombre: 'Cuadrante I',
+            descripcion: 'x > 0, y > 0 (positivo, positivo)',
+            clase: 'cuadrante-1',
+            icono: 'I'
+        };
+    } else if (x < 0 && y > 0) {
+        return {
+            tipo: 'cuadrante',
+            numero: 2,
+            nombre: 'Cuadrante II',
+            descripcion: 'x < 0, y > 0 (negativo, positivo)',
+            clase: 'cuadrante-2',
+            icono: 'II'
+        };
+    } else if (x < 0 && y < 0) {
+        return {
+            tipo: 'cuadrante',
+            numero: 3,
+            nombre: 'Cuadrante III',
+            descripcion: 'x < 0, y < 0 (negativo, negativo)',
+            clase: 'cuadrante-3',
+            icono: 'III'
+        };
+    } else if (x > 0 && y < 0) {
+        return {
+            tipo: 'cuadrante',
+            numero: 4,
+            nombre: 'Cuadrante IV',
+            descripcion: 'x > 0, y < 0 (positivo, negativo)',
+            clase: 'cuadrante-4',
+            icono: 'IV'
+        };
+    }
+}
+
+// Manejador del formulario de cuadrantes
+if (document.getElementById('form-cuadrante')) {
+    document.getElementById('form-cuadrante').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const coordX = document.getElementById('coord-x').value;
+        const coordY = document.getElementById('coord-y').value;
+        
+        // Validar campos
+        const xValid = validateCoordinate(coordX, 'coord-x', 'error-coord-x');
+        const yValid = validateCoordinate(coordY, 'coord-y', 'error-coord-y');
+        
+        if (!xValid || !yValid) {
+            return;
+        }
+        
+        // Convertir a números
+        const x = parseFloat(coordX);
+        const y = parseFloat(coordY);
+        
+        // Identificar cuadrante
+        const resultado = identificarCuadrante(x, y);
+        
+        // Actualizar punto en SVG
+        updatePuntoSVG(x, y);
+        
+        // Mostrar resultados
+        document.getElementById('punto-coords').textContent = `(${x}, ${y})`;
+        
+        const iconElement = document.getElementById('cuadrante-icon');
+        const textElement = document.getElementById('cuadrante-text');
+        
+        // Limpiar clases previas
+        iconElement.className = 'cuadrante-icon';
+        iconElement.classList.add(resultado.clase);
+        iconElement.textContent = resultado.icono;
+        
+        // Actualizar texto
+        textElement.innerHTML = `
+            <h3>${resultado.nombre}</h3>
+            <p>${resultado.descripcion}</p>
+        `;
+        
+        // Mostrar tarjeta de resultados
+        document.getElementById('resultado-cuadrante').classList.remove('hidden');
+    });
+    
+    // Limpiar errores al escribir
+    ['coord-x', 'coord-y'].forEach(id => {
+        document.getElementById(id).addEventListener('input', function() {
+            const errorId = 'error-' + id;
+            document.getElementById(errorId).textContent = '';
+            this.classList.remove('error');
+        });
+    });
+}
