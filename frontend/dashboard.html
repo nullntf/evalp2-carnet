@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Autenticación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Bienvenido al Dashboard</h1>
+                <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+            </div>
+            <div class="user-info">
+                <h2>Información del Usuario</h2>
+                <p><strong>Usuario:</strong> <span id="displayUsername"></span></p>
+                <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+                <p><strong>ID:</strong> <span id="displayId"></span></p>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
