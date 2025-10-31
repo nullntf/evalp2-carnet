@@ -94,26 +94,38 @@ if (window.location.pathname.includes('dashboard.html')) {
     if (!user) {
         window.location.href = 'index.html';
     } else {
-        document.getElementById('displayUsername').textContent = user.username;
-        document.getElementById('displayEmail').textContent = user.email;
-        document.getElementById('displayId').textContent = user.id;
+        // Actualizar información del usuario en la vista principal
+        const displayUsername = document.getElementById('displayUsername');
+        const displayEmail = document.getElementById('displayEmail');
+        const displayId = document.getElementById('displayId');
+        
+        if (displayUsername) displayUsername.textContent = user.username;
+        if (displayEmail) displayEmail.textContent = user.email;
+        if (displayId) displayId.textContent = user.id;
+        
+        // Actualizar nombre en el sidebar
+        const sidebarUsername = document.getElementById('sidebarUsername');
+        if (sidebarUsername) sidebarUsername.textContent = user.username;
     }
     
     // Manejo del botón de logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        try {
-            const response = await fetch(`${API_URL}/logout.php`, {
-                method: 'POST',
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                localStorage.removeItem('user');
-                window.location.href = 'index.html';
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}/logout.php`, {
+                    method: 'POST',
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.removeItem('user');
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                showMessage('message', 'Error al cerrar sesión', 'error');
             }
-        } catch (error) {
-            showMessage('message', 'Error al cerrar sesión', 'error');
-        }
-    });
+        });
+    }
 }
