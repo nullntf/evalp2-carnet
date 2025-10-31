@@ -149,8 +149,132 @@
             <!-- Vista Cuadrantes -->
             <div id="view-cuadrantes" class="view">
                 <div class="content-header">
-                    <h1>📍 Cuadrantes</h1>
-                    <p class="subtitle">Esta sección estará disponible próximamente</p>
+                    <h1>📍 Identificador de Cuadrantes</h1>
+                    <p class="subtitle">Identifica en qué cuadrante del plano cartesiano se encuentra un punto</p>
+                </div>
+                
+                <div class="cuadrantes-container">
+                    <!-- Formulario de Coordenadas -->
+                    <div class="cuadrante-input-section">
+                        <div class="input-card">
+                            <h3>🎯 Ingresa las Coordenadas</h3>
+                            <form id="form-cuadrante" class="cuadrante-form">
+                                <div class="coordenadas-group">
+                                    <div class="form-group">
+                                        <label for="coord-x">Coordenada X:</label>
+                                        <input type="number" id="coord-x" step="any" placeholder="Ej: 5 o -3">
+                                        <span class="error-message" id="error-coord-x"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="coord-y">Coordenada Y:</label>
+                                        <input type="number" id="coord-y" step="any" placeholder="Ej: 2 o -4">
+                                        <span class="error-message" id="error-coord-y"></span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <span>🔍</span> Identificar Cuadrante
+                                </button>
+                            </form>
+                            
+                            <!-- Resultado -->
+                            <div id="resultado-cuadrante" class="resultado-cuadrante hidden">
+                                <div class="resultado-header">
+                                    <h4>Resultado:</h4>
+                                </div>
+                                <div class="resultado-content">
+                                    <div class="punto-info">
+                                        <span class="punto-label">Punto:</span>
+                                        <span class="punto-coords" id="punto-coords"></span>
+                                    </div>
+                                    <div class="cuadrante-resultado">
+                                        <div class="cuadrante-icon" id="cuadrante-icon"></div>
+                                        <div class="cuadrante-text" id="cuadrante-text"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Información de Cuadrantes -->
+                        <div class="info-card">
+                            <h4>ℹ️ Información de Cuadrantes</h4>
+                            <div class="cuadrantes-info">
+                                <div class="info-item">
+                                    <span class="info-badge badge-q1">I</span>
+                                    <span class="info-text">Cuadrante I: x &gt; 0, y &gt; 0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-badge badge-q2">II</span>
+                                    <span class="info-text">Cuadrante II: x &lt; 0, y &gt; 0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-badge badge-q3">III</span>
+                                    <span class="info-text">Cuadrante III: x &lt; 0, y &lt; 0</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-badge badge-q4">IV</span>
+                                    <span class="info-text">Cuadrante IV: x &gt; 0, y &lt; 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Plano Cartesiano SVG -->
+                    <div class="plano-visual-section">
+                        <div class="plano-card">
+                            <h3>📐 Plano Cartesiano</h3>
+                            <svg id="plano-cartesiano" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fondo -->
+                                <rect width="400" height="400" fill="#f8f9fa"/>
+                                
+                                <!-- Cuadrantes con colores suaves -->
+                                <rect x="200" y="0" width="200" height="200" fill="#e3f2fd" opacity="0.5"/>
+                                <rect x="0" y="0" width="200" height="200" fill="#fff3e0" opacity="0.5"/>
+                                <rect x="0" y="200" width="200" height="200" fill="#f3e5f5" opacity="0.5"/>
+                                <rect x="200" y="200" width="200" height="200" fill="#e8f5e9" opacity="0.5"/>
+                                
+                                <!-- Líneas de cuadrícula -->
+                                <g stroke="#e0e0e0" stroke-width="1">
+                                    <line x1="0" y1="100" x2="400" y2="100"/>
+                                    <line x1="0" y1="300" x2="400" y2="300"/>
+                                    <line x1="100" y1="0" x2="100" y2="400"/>
+                                    <line x1="300" y1="0" x2="300" y2="400"/>
+                                </g>
+                                
+                                <!-- Ejes X e Y -->
+                                <g stroke="#424242" stroke-width="2">
+                                    <line x1="0" y1="200" x2="400" y2="200" stroke-dasharray="none"/>
+                                    <line x1="200" y1="0" x2="200" y2="400" stroke-dasharray="none"/>
+                                </g>
+                                
+                                <!-- Flechas de los ejes -->
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                        <polygon points="0 0, 10 3, 0 6" fill="#424242"/>
+                                    </marker>
+                                </defs>
+                                <line x1="200" y1="200" x2="390" y2="200" stroke="#424242" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                <line x1="200" y1="200" x2="200" y2="10" stroke="#424242" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Etiquetas de los ejes -->
+                                <text x="385" y="190" font-size="16" fill="#424242" font-weight="bold">X</text>
+                                <text x="210" y="15" font-size="16" fill="#424242" font-weight="bold">Y</text>
+                                
+                                <!-- Etiquetas de cuadrantes -->
+                                <text x="290" y="100" font-size="24" fill="#1976d2" font-weight="bold" opacity="0.7">I</text>
+                                <text x="110" y="100" font-size="24" fill="#f57c00" font-weight="bold" opacity="0.7">II</text>
+                                <text x="110" y="310" font-size="24" fill="#7b1fa2" font-weight="bold" opacity="0.7">III</text>
+                                <text x="290" y="310" font-size="24" fill="#388e3c" font-weight="bold" opacity="0.7">IV</text>
+                                
+                                <!-- Origen -->
+                                <circle cx="200" cy="200" r="4" fill="#424242"/>
+                                <text x="205" y="215" font-size="12" fill="#424242">(0,0)</text>
+                                
+                                <!-- Punto dinámico (se actualiza con JavaScript) -->
+                                <circle id="punto-dinamico" cx="200" cy="200" r="0" fill="#d32f2f" stroke="#fff" stroke-width="2" opacity="0"/>
+                                <text id="coords-dinamico" x="200" y="200" font-size="12" fill="#d32f2f" font-weight="bold" opacity="0"></text>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
             
